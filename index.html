@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cosmic Wonders ✨ NASA APOD Explorer</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="stars-overlay"></div>
+
+  <main class="container">
+    <header>
+      <h1>✨ Cosmic Wonders 🚀</h1>
+      <p>Explore the beauty of the universe, updated daily by NASA 🔭</p>
+    </header>
+
+    <!-- Controls -->
+    <section class="controls">
+      <label for="date-picker">Pick a day 🗓️:</label>
+      <input type="date" id="date-picker" />
+      <button id="today-btn" class="btn btn-primary">Today 🌟</button>
+      <button id="random-btn" class="btn btn-secondary">Random Day 🎲</button>
+    </section>
+
+    <!-- Loading Spinner -->
+    <div id="loader" class="loader-container">
+      <div class="spinner"></div>
+      <p>Contacting NASA satellite... 🛰️</p>
+    </div>
+
+    <!-- Error Message Display -->
+    <div id="error-msg" class="error-card hidden">
+      <p>⚠️ Oops! Houston, we have a problem. Could not load data.</p>
+    </div>
+
+    <!-- APOD Content Display -->
+    <article id="apod-content" class="card hidden">
+      <div class="media-container" id="media-wrapper">
+        <!-- Image or YouTube Video will be injected here -->
+      </div>
+      
+      <div class="details">
+        <div class="meta-badge">
+          <span id="apod-date">📅 Date</span>
+          <span id="apod-copyright" class="copyright"></span>
+        </div>
+        <h2 id="apod-title">Title Goes Here 🪐</h2>
+        <p id="apod-explanation">Explanation of the cosmic photo...</p>
+        
+        <div class="action-buttons">
+          <a id="hd-link" href="#" target="_blank" class="btn btn-accent">View Full HD 📸</a>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer>
+    <p>Powered by NASA APOD API 🛸 | Designed with ❤️ & 🌌</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

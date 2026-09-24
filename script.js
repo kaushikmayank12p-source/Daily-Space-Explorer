@@ -10,6 +10,7 @@ const randomBtn = document.getElementById("random-btn");
 const loader = document.getElementById("loader");
 const apodContent = document.getElementById("apod-content");
 const errorMsg = document.getElementById("error-msg");
+const errorText = errorMsg.querySelector("p");
 
 const mediaWrapper = document.getElementById("media-wrapper");
 const apodTitle = document.getElementById("apod-title");
@@ -21,6 +22,7 @@ const hdLink = document.getElementById("hd-link");
 // Set today's date as max allowed date in picker
 const todayString = new Date().toISOString().split("T")[0];
 datePicker.max = todayString;
+datePicker.value = todayString;
 
 // Fetch APOD Data
 async function fetchAPOD(date = "") {
@@ -42,6 +44,9 @@ async function fetchAPOD(date = "") {
     displayData(data);
   } catch (error) {
     console.error("Houston, error fetching data:", error);
+    errorText.textContent = window.location.protocol === "file:"
+      ? "⚠️ Open this page through a local web server so NASA data can load."
+      : `⚠️ Could not load NASA data: ${error.message}`;
     errorMsg.classList.remove("hidden");
   } finally {
     showLoader(false);

@@ -1,5 +1,4 @@
-// 👉 REPLACE YOUR NASA API KEY HERE:
-const API_KEY = "A5Ue3s3F2uzCwKwwSeBWxLgcVJRPgfSIM8x0V2U6";
+const API_KEY = window.NASA_API_KEY || "";
 
 const BASE_URL = "https://api.nasa.gov/planetary/apod";
 
@@ -29,6 +28,13 @@ async function fetchAPOD(date = "") {
   showLoader(true);
   errorMsg.classList.add("hidden");
   apodContent.classList.add("hidden");
+
+  if (!API_KEY || API_KEY === "PASTE_YOUR_NASA_API_KEY_HERE") {
+    errorText.textContent = "Set your NASA API key in config.js before running the app.";
+    errorMsg.classList.remove("hidden");
+    showLoader(false);
+    return;
+  }
 
   let url = `${BASE_URL}?api_key=${API_KEY}`;
   if (date) {

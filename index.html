@@ -1,119 +1,59 @@
-const API_KEY = "A5Ue3s3F2uzCwKwwSeBWxLgcVJRPgfSIM8x0V2U6";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daily Space Explorer</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <main class="container">
+    <header>
+      <h1>Daily Space Explorer</h1>
+      <p>Explore the universe one day at a time.</p>
+    </header>
 
-const BASE_URL = "https://api.nasa.gov/planetary/apod";
+    <section class="controls">
+      <label for="date-picker">Pick a day:</label>
+      <input type="date" id="date-picker" />
+      <button id="today-btn" class="btn btn-primary">Today</button>
+      <button id="random-btn" class="btn btn-secondary">Random Day</button>
+    </section>
 
-const datePicker = document.getElementById("date-picker");
-const todayBtn = document.getElementById("today-btn");
-const randomBtn = document.getElementById("random-btn");
-const loader = document.getElementById("loader");
-const apodContent = document.getElementById("apod-content");
-const errorMsg = document.getElementById("error-msg");
-const errorText = errorMsg.querySelector("p");
+    <div id="loader" class="loader-container">
+      <div class="spinner"></div>
+      <p>Loading the latest NASA image.</p>
+    </div>
 
-const mediaWrapper = document.getElementById("media-wrapper");
-const apodTitle = document.getElementById("apod-title");
-const apodDate = document.getElementById("apod-date");
-const apodExplanation = document.getElementById("apod-explanation");
-const apodCopyright = document.getElementById("apod-copyright");
-const hdLink = document.getElementById("hd-link");
+    <div id="error-msg" class="error-card hidden">
+      <p>Unable to load data right now. Please try again.</p>
+    </div>
 
-const todayString = new Date().toISOString().split("T")[0];
-datePicker.max = todayString;
-datePicker.value = todayString;
+    <article id="apod-content" class="card hidden">
+      <div class="media-container" id="media-wrapper"></div>
 
-async function fetchAPOD(date = "") {
-  showLoader(true);
-  errorMsg.classList.add("hidden");
-  apodContent.classList.add("hidden");
+      <div class="details">
+        <div class="meta-badge">
+          <span id="apod-date">Date</span>
+          <span id="apod-copyright" class="copyright"></span>
+        </div>
+        <h2 id="apod-title">Title</h2>
+        <p id="apod-explanation">Explanation...</p>
 
-  let url = `${BASE_URL}?api_key=${API_KEY}`;
-  if (date) {
-    url += `&date=${date}`;
-  }
+        <div class="action-buttons">
+          <a id="hd-link" href="#" target="_blank" class="btn btn-accent">View Full HD</a>
+        </div>
+      </div>
+    </article>
+  </main>
 
-  try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`${response.statusText}`);
-    }
-    const data = await response.json();
-    displayData(data);
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    errorText.textContent = window.location.protocol === "file:"
-      ? "Open this page through a local web server so NASA data can load."
-      : `Could not load NASA data: ${error.message}`;
-    errorMsg.classList.remove("hidden");
-  } finally {
-    showLoader(false);
-  }
-}
+  <footer>
+    <p>Powered by NASA APOD API</p>
+  </footer>
 
-function displayData(data) {
-  apodTitle.textContent = data.title;
-  apodDate.textContent = data.date;
-  apodExplanation.textContent = data.explanation;
-
-  if (data.copyright) {
-    apodCopyright.textContent = data.copyright.trim();
-    apodCopyright.classList.remove("hidden");
-  } else {
-    apodCopyright.classList.add("hidden");
-  }
-
-  mediaWrapper.innerHTML = "";
-
-  if (data.media_type === "image") {
-    const img = document.createElement("img");
-    img.src = data.url;
-    img.alt = data.title;
-    mediaWrapper.appendChild(img);
-
-    hdLink.href = data.hdurl || data.url;
-    hdLink.classList.remove("hidden");
-  } else if (data.media_type === "video") {
-    const iframe = document.createElement("iframe");
-    iframe.src = data.url;
-    iframe.allowFullscreen = true;
-    mediaWrapper.appendChild(iframe);
-
-    hdLink.classList.add("hidden");
-  }
-
-  apodContent.classList.remove("hidden");
-}
-
-function showLoader(isLoading) {
-  if (isLoading) {
-    loader.classList.remove("hidden");
-  } else {
-    loader.classList.add("hidden");
-  }
-}
-
-function getRandomDate() {
-  const start = new Date("1995-06-16").getTime();
-  const end = new Date().getTime();
-  const randomTime = new Date(start + Math.random() * (end - start));
-  return randomTime.toISOString().split("T")[0];
-}
-
-todayBtn.addEventListener("click", () => {
-  datePicker.value = todayString;
-  fetchAPOD(todayString);
-});
-
-datePicker.addEventListener("change", (e) => {
-  if (e.target.value) {
-    fetchAPOD(e.target.value);
-  }
-});
-
-randomBtn.addEventListener("click", () => {
-  const randomDate = getRandomDate();
-  datePicker.value = randomDate;
-  fetchAPOD(randomDate);
-});
-
-fetchAPOD();
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
 
